@@ -22,7 +22,7 @@ Some skills mention [Matt Pocock's](https://github.com/mattpocock/skills) `grill
 ## Credits
 
 - `teach` is reworked from [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach) (MIT, © Matt Pocock). His license is in [skills/teach/LICENSE](skills/teach/LICENSE).
-- `create-tickets` is reworked from Matt Pocock's [to-tickets](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-tickets) (MIT, © Matt Pocock).
+- `create-tickets` is reworked from Matt Pocock's [to-tickets](https://github.com/mattpocock/skills/tree/main/skills/engineering/to-tickets) (MIT, © Matt Pocock). His license is in [skills/create-tickets/LICENSE](skills/create-tickets/LICENSE).
 - `write-a-skill` includes `UNSLOP.md` by Lauren Tan (MIT). Her license is in [skills/write-a-skill/UNSLOP-LICENSE](skills/write-a-skill/UNSLOP-LICENSE).
 
 ## License
