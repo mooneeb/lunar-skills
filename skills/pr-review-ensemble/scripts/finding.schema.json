@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["findings", "verdicts"],
+  "properties": {
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "category",
+          "file",
+          "line",
+          "cause_file",
+          "cause_line",
+          "claim",
+          "reasoning",
+          "repro_steps",
+          "requested"
+        ],
+        "properties": {
+          "severity": { "type": "string", "enum": ["BLOCKER", "MAJOR", "MINOR", "NIT"] },
+          "category": {
+            "type": "string",
+            "enum": [
+              "security",
+              "permissions",
+              "auth",
+              "data-loss",
+              "state-concurrency",
+              "correctness",
+              "design",
+              "best-practice",
+              "performance",
+              "testing"
+            ]
+          },
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "cause_file": { "type": ["string", "null"] },
+          "cause_line": { "type": ["integer", "null"] },
+          "claim": { "type": "string" },
+          "reasoning": { "type": "string" },
+          "repro_steps": { "type": "array", "items": { "type": "string" } },
+          "requested": { "type": "boolean" }
+        }
+      }
+    },
+    "verdicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "verdict", "file", "line", "evidence"],
+        "properties": {
+          "id": { "type": "string" },
+          "verdict": { "type": "string", "enum": ["fixed", "not_fixed"] },
+          "file": { "type": "string" },
+          "line": { "type": "integer" },
+          "evidence": { "type": "string" }
+        }
+      }
+    }
+  }
+}

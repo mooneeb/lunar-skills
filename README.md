@@ -7,6 +7,7 @@ Agent skills I've written, or reworked from other people's skills.
 | [write-a-skill](skills/write-a-skill) | Write a new agentic skill, or change an existing skill after an observed failure. |
 | [create-tickets](skills/create-tickets) | Split a spec into the fewest vertical-slice tickets that each fit one agent session, and publish them as GitHub sub-issues with native blocking links. |
 | [teach](skills/teach) | Teach the user a new skill or concept, within this workspace. |
+| [pr-review-ensemble](skills/pr-review-ensemble) | Before a PR exists, review the change with the latest Claude Opus and GPT Sol in a budget of rounds, keeping only blockers and major defects with repro steps. |
 
 ## Install
 
