@@ -1,0 +1,5 @@
+interface:
+  display_name: "Implement and Review"
+  short_description: "Build work on its own branch, then review it"
+policy:
+  allow_implicit_invocation: false
