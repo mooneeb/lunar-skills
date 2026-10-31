@@ -23,6 +23,7 @@ trap 'rm -rf "$tmp"' EXIT
 header() { awk '/^## /{exit} {print}' "$1"; }
 body() { awk 'found || /^## /{found=1; print}' "$1"; }
 field() { header "$1" | sed -n "s/^$2: //p"; }
+scenario_re='^### Scenario [0-9]+: .+ \((automated|manual, needs .+)\)$'
 
 # Check every draft before anything is posted, so a bad draft never leaves half the tickets on GitHub.
 problems=()
@@ -74,9 +75,30 @@ for file in ${drafts[@]+"${drafts[@]}"}; do
     fi
   fi
 
-  for section in "What to build" "Acceptance criteria" "How to QA"; do
+  for section in "What to build" "How to QA"; do
     body "$file" | grep -qx "## $section" || problems+=("$name: the body has no '## $section' section")
   done
+
+  # A ready-for-human ticket can have no product behavior, so only agent tickets need stories and scenarios.
+  [ "$statuses" = ready-for-agent ] || continue
+  body "$file" | grep -qx "## User stories" || problems+=("$name: the body has no '## User stories' section")
+
+  # One row per "### " heading in How to QA: the heading, then 1 if a "Steps:" line has a numbered step after it.
+  scenarios=0
+  while IFS=$'\t' read -r heading steps; do
+    scenarios=$((scenarios + 1))
+    [[ $heading =~ $scenario_re ]] || problems+=("$name: '$heading' is not '### Scenario <N>: <Name> (automated)' or '(manual, needs <device or tool>)'")
+    [ "$steps" = 2 ] || problems+=("$name: '$heading' has no 'Steps:' line with a numbered step after it")
+  done < <(body "$file" | awk '
+    /^## /     { qa = ($0 == "## How to QA"); next }
+    !qa        { next }
+    /^### /    { if (h != "") print h "\t" s; h = $0; s = 0; next }
+    /^Steps:$/ { s = 1; next }
+    s == 1 && /^1\. / { s = 2 }
+    END        { if (h != "") print h "\t" s }')
+  if [ "$scenarios" -lt 2 ] || [ "$scenarios" -gt 5 ]; then
+    problems+=("$name: How to QA has $scenarios scenarios, not 2 to 5. Merge or split the ticket")
+  fi
 done
 
 if [ ${#problems[@]} -gt 0 ]; then
