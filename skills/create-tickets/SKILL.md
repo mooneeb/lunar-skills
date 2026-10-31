@@ -27,45 +27,49 @@ If the user passed arguments, treat them as the spec reference.
 ### Context
 
 1. Read the spec. If the user passed an issue number or a URL, run `gh issue view <number> --comments`. If the user passed a path, read the file. If the user passed nothing, use the spec in the conversation. If no spec exists, tell the user to run `/to-spec`, then stop.
-2. If `GLOSSARY.md` or `docs/adr/` exists, read them. Use the glossary terms in each ticket.
-3. Explore the code that the spec touches. Find the entry points, the layers, and the modules that each user story reaches. The Slicing phase uses these modules to find collisions.
-4. List each behavior that the spec leaves undecided, such as a limit with no value. If the list is not empty, ask the user about each item. If an item is about the look or the feel of the product, suggest `/prototype`. A ticket with a guessed behavior sends an agent to build the wrong thing.
-5. Choose the tracker. If `git remote -v` shows a GitHub remote, use GitHub. If not, use local files.
-6. If you use GitHub, run `gh auth status`. If it fails, tell the user to run `! gh auth login`, then stop.
+2. Read the User Stories and the Testing Decisions sections of the spec. Each ticket quotes its stories, and each `automated` scenario tests at a boundary that Testing Decisions names.
+3. If `GLOSSARY.md` or `docs/adr/` exists, read them. Use the glossary terms in each ticket.
+4. Explore the code that the spec touches. Find the entry points, the layers, and the modules that each user story reaches. The Slicing phase uses these modules to find collisions.
+5. List each behavior that the spec leaves undecided, such as a limit with no value. If the list is not empty, ask the user about each item. If an item is about the look or the feel of the product, suggest `/prototype`. A ticket with a guessed behavior sends an agent to build the wrong thing.
+6. Choose the tracker. If `git remote -v` shows a GitHub remote, use GitHub. If not, use local files.
+7. If you use GitHub, run `gh auth status`. If it fails, tell the user to run `! gh auth login`, then stop.
 
 **Done when:** you read the spec and the code that it touches, the user answered each undecided behavior, and you chose the tracker.
 
 ### Slicing
 
-1. Group the user stories by user flow. A **user flow** is a set of stories that share one entry point, the same main data, and one QA demo. Do not group by module or by the Implementation Decisions section of the spec. Each of those groups is a horizontal slice.
+1. Group the user stories by user flow. A **user flow** is a set of stories that share one entry point, the same main data, and one QA demo. Do not group by module or by the Implementation Decisions section of the spec. Each of those groups is a horizontal slice. Write the story numbers of each flow. If a flow covers part of a story, write the part, such as `17 (page turns only)`.
 2. Make ticket 01 the walking skeleton. A **walking skeleton** is the thinnest version of the main flow that runs through every layer that the feature needs. Put the setup work, such as the schema and the routes, in the walking skeleton. Do not write a ticket for setup work alone, because it has no QA demo.
 3. Put each prefactor in the first slice that needs it. Do not write a separate refactor ticket, because nobody can test it in the product.
 4. If the spec has one mechanical change across the whole codebase, such as a rename of a shared column, read `WIDE-REFACTOR.md`.
 5. Apply the size rules to each ticket.
 
-   | Size      | Sign                                                                                       | Action                       |
-   | --------- | ------------------------------------------------------------------------------------------ | ---------------------------- |
-   | Too small | Its QA demo is a step in the demo of another ticket, or it has fewer than 3 acceptance criteria | Merge it into the other ticket |
-   | Too big   | It has more than 8 acceptance criteria, 2 or more QA demos, or 2 or more new external services | Split it by flow             |
-   | Medium    | 1 QA demo, 3 to 8 acceptance criteria, and 0 or 1 new external service                      | Keep it                      |
+   | Size      | Sign                                                                                  | Action                         |
+   | --------- | ------------------------------------------------------------------------------------- | ------------------------------ |
+   | Too small | Its QA demo is a step in the demo of another ticket, or it has fewer than 2 scenarios | Merge it into the other ticket |
+   | Too big   | It has more than 5 scenarios, 2 or more QA demos, or 2 or more new external services  | Split it by flow               |
+   | Medium    | 1 QA demo, 2 to 5 scenarios, and 0 or 1 new external service                          | Keep it                        |
+
+   A **scenario** is one run through the product with one setup, as `TICKET-FORMAT.md` defines it.
 
 6. Count the tickets. If one agent can build the whole spec within the size rules, write 1 ticket. Most specs give 2 to 5 tickets. If you have more than 8, merge flows. If the count and the size rules disagree, the size rules win.
 7. Add the blocking links. Ticket A is **blocked by** ticket B if A needs code that B writes. If two tickets with no link between them change the same module, add a link or merge them. Without a link, 2 agents edit the same code at the same time, and the merge fails.
-8. Label each ticket. If an agent can do all of it, use `ready-for-agent`. If it needs a person, such as to create an API key or to make a design decision, use `ready-for-human`. A `ready-for-human` ticket with no product behavior does not need the size rules or the test.
+8. Label each ticket. If an agent can do all of it, use `ready-for-agent`. If it needs a person, such as to create an API key or to make a design decision, use `ready-for-human`. A `ready-for-human` ticket with no product behavior does not need the size rules or the test. A ticket with a `manual` scenario keeps `ready-for-agent`, because a developer runs the `manual` scenarios after the merge.
 9. Write the body of each ticket from `TICKET-FORMAT.md`.
 10. Do the test on each ticket. Mark it `VERTICAL` or `REWRITE`. Rewrite or merge each `REWRITE` ticket, then do the test again.
 
 **The test:** After this ticket merges, can a person do its QA demo in the product, with no other unmerged ticket?
 
-**Done when:** every ticket is `VERTICAL`, every ticket is in the Medium row, and every pair of tickets that changes the same module has a link or is one ticket.
+**Done when:** every ticket is `VERTICAL`, every ticket is in the Medium row, every pair of tickets that changes the same module has a link or is one ticket, and every story or story part is in one ticket or has `deferred: <reason>`.
 
 ### Review
 
 1. Show the user a numbered list of the tickets. For each ticket, show the title, the label, the tickets that block it, and the QA demo in one line.
 2. Under the list, show the waves. A **wave** is a set of tickets whose blockers are all in earlier waves. Wave 1 has the tickets with no blocker.
-3. Ask the user which tickets to merge, split, or change. Apply each change. Then do the test and the size rules again on each changed ticket.
+3. Under the waves, show a table with each story or story part and its ticket, or `deferred: <reason>`. A story with no ticket and no reason is a feature that nobody builds.
+4. Ask the user which tickets to merge, split, or change. Apply each change. Then do the test and the size rules again on each changed ticket.
 
-**Done when:** the user approves the list.
+**Done when:** the user approves the list, and each story or story part has a ticket or `deferred: <reason>`.
 
 **Stop:** Do not start the Publish phase before the user approves the list, because agents start work on each issue that you post.
 
