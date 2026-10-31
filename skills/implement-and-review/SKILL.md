@@ -26,6 +26,8 @@ If the ticket has no scenarios, use /tdd where possible, at pre-agreed seams.
 
 If the `Setup:` line of a scenario names a command that does not exist, build the command in this branch.
 
+If a `manual` scenario tests an iOS or Android app and the `device_list` tool is available, read `T3-DEVICES.md`. Run its device scenarios after the first commit and before `code-review`. Run them again after the review stops, with the scenario tests.
+
 Run typechecking regularly, single test files regularly, and the full test suite once at the end.
 
 When the work is done, commit it to the branch. Then review the work in this order:
@@ -47,12 +49,12 @@ After the review stops, if the ticket has scenarios, run each scenario test once
 
 </results-template>
 
-| Status        | When                                                                           |
-| ------------- | ------------------------------------------------------------------------------ |
-| `PASS`        | The test passes.                                                               |
-| `FAIL`        | The test fails, or the evidence shows a result that differs from the scenario. |
-| `BLOCKED`     | No test can run an `automated` scenario here. Write the reason.                |
-| `NEEDS_HUMAN` | The scenario is `manual`. Write the device or the tool that it needs.          |
+| Status        | When                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| `PASS`        | The test passes, or the device shows each `Then` and `And` result.                                          |
+| `FAIL`        | The test fails, or the evidence shows a result that differs from the scenario.                              |
+| `BLOCKED`     | No test can run an `automated` scenario here. Write the reason.                                             |
+| `NEEDS_HUMAN` | The scenario is `manual`, and you did not run it on a device. Write the device or the tool that it needs.   |
 
 Add each `FAIL` scenario to `open_critical`.
 
