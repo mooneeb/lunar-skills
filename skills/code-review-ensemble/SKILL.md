@@ -1,6 +1,6 @@
 ---
-name: pr-review-ensemble
-description: Review a change before its pull request exists, with the latest Claude Opus and GPT Sol as 2 independent principal-engineer reviewers in a budget of rounds. Use when you are about to open a pull request, or when the user says "review this before the PR", "run the review ensemble", or "pr-review-ensemble". Use `code-review` to review a change against the documented standards of the repository or against a spec.
+name: code-review-ensemble
+description: Review the code changes on the current branch with the latest Claude Opus and GPT Sol as 2 independent reviewers. Use when the user says "review my changes", "run the review ensemble", or "code-review-ensemble". Use `code-review` to review against the documented standards of the repository or a spec.
 ---
 
 A **review round** is one run of `scripts/review.sh`. The script gives the change to the latest Claude Opus and the latest GPT Sol in parallel, and merges their findings into one report. The reviewers report defects, not fixes. Each use of this skill runs one round. The caller fixes the findings, then uses the skill again for the next round.
@@ -50,7 +50,7 @@ The report lists each finding of each reviewer. The script does not merge duplic
 
 **The test:** Does every finding in the report appear in exactly 1 group with 1 outcome?
 
-**When it does not apply:** the pull request already exists, or the user wants a review against the standards of the repository or a spec. Call the Skill tool with "code-review".
+**When it does not apply:** the user wants a review against the standards of the repository or a spec. Call the Skill tool with "code-review".
 
 **Reply:**
 

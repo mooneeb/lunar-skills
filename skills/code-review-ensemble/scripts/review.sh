@@ -5,7 +5,7 @@
 #                  [--claude-model <model>] [--codex-model <model>] [--reset]
 #
 # The change is `git diff <merge-base>` of the current branch: committed, staged, unstaged, and untracked files.
-# The state and every raw output live in $(git rev-parse --absolute-git-dir)/pr-review-ensemble/<branch>/.
+# The state and every raw output live in $(git rev-parse --absolute-git-dir)/code-review-ensemble/<branch>/.
 # Prints the merged report JSON on stdout.
 #
 # Exit codes: 0 a report was printed, 1 usage or environment error.
@@ -42,7 +42,7 @@ done
 top=$(git rev-parse --show-toplevel 2>/dev/null) || fail "not inside a git repository"
 cd "$top"
 branch=$(git symbolic-ref --short -q HEAD || git rev-parse --short HEAD)
-state_dir="$(git rev-parse --absolute-git-dir)/pr-review-ensemble/${branch//\//__}"
+state_dir="$(git rev-parse --absolute-git-dir)/code-review-ensemble/${branch//\//__}"
 state="$state_dir/state.json"
 
 [ "$reset" = 1 ] && rm -rf "$state_dir"
