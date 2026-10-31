@@ -1,6 +1,6 @@
 ---
 name: implement-and-review
-description: "Implement a piece of work based on a spec or set of tickets on its own branch, then review it with code-review and pr-review-ensemble. Use `implement` to work on the current branch."
+description: "Implement a piece of work based on a spec or set of tickets on its own branch, then review it with code-review and code-review-ensemble. Use `implement` to work on the current branch."
 disable-model-invocation: true
 metadata:
   source: https://github.com/mattpocock/skills/tree/main/skills/engineering/implement
@@ -34,8 +34,8 @@ When the work is done, commit it to the branch. Then review the work in this ord
 
 1. Call the Skill tool with "code-review". Give it the base commit as the fixed point, and the spec or tickets. Run it once.
 2. Fix the findings, then commit the fixes.
-3. Call the Skill tool with "pr-review-ensemble". If the first report shows `round` above 1 or the status `BUDGET_EXHAUSTED`, stop. Tell the user that the branch has an earlier review state.
-4. Fix each `CONFIRMED` finding that is not a `NIT`. Commit the fixes, then call the Skill tool with "pr-review-ensemble" again.
+3. Call the Skill tool with "code-review-ensemble". If the first report shows `round` above 1 or the status `BUDGET_EXHAUSTED`, stop. Tell the user that the branch has an earlier review state.
+4. Fix each `CONFIRMED` finding that is not a `NIT`. Commit the fixes, then call the Skill tool with "code-review-ensemble" again.
 5. Stop when the status is `PASS`, `NO_CHANGES`, `BUDGET_EXHAUSTED`, or `REVIEWER_FAILED`.
 
 If the fix for a finding adds behavior that the spec or tickets do not ask for, do not make the fix.
