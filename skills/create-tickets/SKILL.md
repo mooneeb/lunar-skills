@@ -27,7 +27,7 @@ If the user passed arguments, treat them as the spec reference.
 ### Context
 
 1. Read the spec. If the user passed an issue number or a URL, run `gh issue view <number> --comments`. If the user passed a path, read the file. If the user passed nothing, use the spec in the conversation. If no spec exists, tell the user to run `/to-spec`, then stop.
-2. Read the User Stories and the Testing Decisions sections of the spec. Each ticket quotes its stories, and each `automated` scenario tests at a boundary that Testing Decisions names.
+2. Read the User Stories and the Testing Decisions sections of the spec. Each ticket quotes its stories, and each `automated` scenario tests at a seam that Testing Decisions names.
 3. If `GLOSSARY.md` or `docs/adr/` exists, read them. Use the glossary terms in each ticket.
 4. Explore the code that the spec touches. Find the entry points, the layers, and the modules that each user story reaches. The Slicing phase uses these modules to find collisions.
 5. List each behavior that the spec leaves undecided, such as a limit with no value. If the list is not empty, ask the user about each item. If an item is about the look or the feel of the product, suggest `/prototype`. A ticket with a guessed behavior sends an agent to build the wrong thing.
