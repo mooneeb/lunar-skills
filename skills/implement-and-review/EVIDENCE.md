@@ -8,7 +8,7 @@
 2. Otherwise, if the test tool of the scenario can record, such as Playwright video, use it.
 3. Otherwise, write `no evidence: <reason>` in the manifest row of the scenario. Continue the run, because the test result of the scenario still counts.
 
-A `manual` scenario gets no evidence. Its row in the results table is `NEEDS_HUMAN`.
+A `manual` scenario that you did not run on a device gets no evidence. Its row in the results table is `NEEDS_HUMAN`.
 
 ## Pick the kind
 
@@ -44,4 +44,4 @@ For each `Then` and `And` line, ask: can one frame show this result?
 
 The kind is `screenshot`, `before`, `after`, `gif`, or `mp4`.
 
-**Done when:** each `automated` scenario has a manifest row with a file, or a row with `no evidence: <reason>`.
+**Done when:** each `automated` scenario and each device scenario has a manifest row with a file, or a row with `no evidence: <reason>`.
