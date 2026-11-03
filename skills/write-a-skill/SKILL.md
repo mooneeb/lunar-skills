@@ -24,7 +24,7 @@ Open a todolist with one entry per phase. List the phases of the branch file, th
 
 ## Shared phases
 
-Run these phases after the phases of the branch file. Apply each rule only to the sentences that you wrote or changed.
+Run these phases after the phases of the branch file. Apply each rule only to the sentences that you wrote or changed. If a file in the target folder changes after the Check phase, run Wording and Check again before you reply.
 
 ### Wording
 

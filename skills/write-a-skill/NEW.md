@@ -83,7 +83,7 @@ Write no skill file in this phase, because without the pinned items, a file cont
 
 **Done when:** the user approves the invocation, the skeleton, the file list, and the target folder.
 
-**Stop:** Do not start the Draft phase before the user approves the invocation, the skeleton, the file list, and the target folder.
+**Stop:** Do not start the Draft phase before the user approves the invocation, the skeleton, the file list, and the target folder. If the user only answers questions or changes an item, ask for approval again.
 
 ### Draft
 
