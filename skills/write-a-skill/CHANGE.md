@@ -40,7 +40,7 @@ Pin each item in this table.
 
 **Done when:** the user sees each sentence or gap, how it causes the failure, and its proposed change. If you used `grilling`, the user also confirms that each decision has an answer.
 
-**Stop:** Do not start the Draft phase before the user approves the changes.
+**Stop:** Do not start the Draft phase before the user approves the changes. If the user only answers questions or changes an item, ask for approval again.
 
 ### Draft
 
