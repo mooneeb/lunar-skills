@@ -46,7 +46,7 @@ These rules cover what a skill contains and how it is organized.
 
 - Delete each sentence that changes no decision. Delete the whole sentence, not words from it. A sentence changes no decision if the agent acts the same without it.
 - Write only what the agent cannot find in the files or the environment. Do not write what the model does by default.
-- In an existing skill, wait for an observed failure before you change the wording. Name the failure in the commit message.
+- In an existing skill, wait for an observed failure before you change the wording. A review note from the user, or a gap from `**The test:**`, is an observed failure. Name the failure in the commit message.
 - If a script, a type, or a lint can enforce a rule, build it. Then delete the sentence that states the rule.
 
 ## Labels

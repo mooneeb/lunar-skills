@@ -20,11 +20,11 @@ The file in that row is the branch file. Read only that file. If no row fits, as
 
 ## Start
 
-Open a todolist with one entry per phase. List the phases of the branch file, then Wording, Check, and Delivery. If the user passed arguments, treat them as the requirements. If you skip a step, write `skip: <reason>` in its place.
+Open a todolist with one entry per phase. List the phases of the branch file, then Wording, Check, and Delivery. If the user passed arguments, treat them as the requirements. If you skip a step, write `skip: <reason>` in its place. If you have no todolist tool, write the phases and their status in each reply.
 
 ## Shared phases
 
-Run these phases after the phases of the branch file. Apply each rule only to the sentences that you wrote or changed. If a file in the target folder changes after the Check phase, run Wording and Check again before you reply.
+Run these phases after the phases of the branch file. Apply each rule only to the sentences that you wrote or changed. If a file in the target folder changes after the Wording phase, run Wording and Check again before you reply.
 
 ### Wording
 
@@ -36,18 +36,27 @@ Run these phases after the phases of the branch file. Apply each rule only to th
 ### Check
 
 1. Answer yes or no for each rule in `RULES.md`. Fix each no, or keep it and write the reason.
-2. Delete each sentence in the target folder that changes no decision. A sentence changes no decision if the agent acts the same without it.
-3. Show the user the path of each file.
+2. If a fix changes what the skill does, show the user the gap and the proposed change. Apply the fix only after the user approves it. A fix that changes only the wording needs no approval.
+3. If a sentence that you wrote or changed changes no decision, delete it. A sentence changes no decision if the agent acts the same without it.
+4. Run the test. If the change is only wording, write `skip: wording only`. If you have no sub-agent tool, write `skip: no sub-agent tool`. Otherwise, start 2 new sub-agents with the same sample request. Choose a request that reaches the changed sentences.
+5. Make sure that each quoted sentence is in the files and settles the guess. If it is not or does not, treat the guess as `none`. Mark the test `PASS` if the 2 lists of steps match and no `none` guess changes a step. Otherwise, mark it `ISSUES`. If a sub-agent fails, mark the test `ISSUES` and report the failure.
+6. If the test is `ISSUES`, follow step 2 for each fix. Then run the test again. After 2 runs, show the user each remaining gap. If the user approves a fix for a remaining gap, run the test 1 more time.
+7. Show the user the path of each file.
 
-**The test:** Does an agent that has only the new `SKILL.md` and a sample request take the same steps each time?
+<trace-brief-template>
+Read each file at these paths: <path of each file in the file list>. Trace the steps for this request: <sample request>. Run no commands, and change no files. List each step in order. List each guess that you made. For each guess, quote the sentence that settles it, or write `none`. If you write `none`, say if another answer changes a step. Under 400 words.
+</trace-brief-template>
+
+**The test:** Does an agent that has only the files in the file list and a sample request take the same steps each time?
 
 **Done when:**
 
 - Each rule in `RULES.md` has a yes or a written reason.
 - Each sentence changes a decision.
+- The test has `PASS`, `ISSUES` with each gap shown to the user, or a `skip:` reason.
 - The user has the path of each file.
 
-**Stop:** Do not start the Delivery phase before the user reviews the files.
+**Stop:** Do not start the Delivery phase before the user reviews the files. A request to deliver covers only files that did not change after the request. If a file changed, show the user the change and ask again.
 
 ### Delivery
 
@@ -62,5 +71,6 @@ Run these phases after the phases of the branch file. Apply each rule only to th
 **Reply:**
 
 - The path of each file that you wrote or changed, one per line.
-- Each rule kept as a no, with its reason.
+- Each rule kept as a no for a sentence that you wrote or changed, with its reason.
+- The result of the test.
 - Each item that the Reply of the branch file adds.
